@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        textarea{
+            border-radius: 20px;
+            border: 2px solid black;
+            padding: 0.5rem;
+            font-size: 15px;
+            width: 100%;
+            text-align: center;
+            resize: none;
+            
+        }
+        button{
+            height: 2.5rem;
+            width: 5rem;
+            background-color: #000000;
+            border: 2px solid black;
+            border-radius: 15px;
+            color: #fff;
+            font-size: 15px;
+        }
+        button:hover{
+            cursor: pointer;
+        }
+        * {
+            font-family: 'Poppins';
+            margin: 0;
+            box-sizing: border-box;
+            padding: 0;
+
+        }
+        form{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: fit-content;
+            gap: 1rem;
+        }
+        .creating{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #40ff6a;
+            width: 20%;
+            height: max-content;
+            border-radius: 20px;
+            padding: 1.5rem 0;
+
+        }
+        h2{
+            padding-bottom: 1rem;
+        }
+    </style>
+
+    <title>Create</title>
+</head>
+
+<body>
+    <div class="creating">
+        <h2>Enter Your Details</h2>
+        <form method="POST" action="/user/<%=newId%>">
+            <textarea name="username" cols="25" rows="2" required placeholder="enter your username"></textarea>
+            <textarea name="email" cols="25" rows="2" required placeholder="enter email"></textarea>
+            <textarea name="email" cols="25" rows="2" required placeholder="create password"></textarea>
+
+            <button>CREATE</button>
+        </form>
+    </div>
+</body>
+
+</html>

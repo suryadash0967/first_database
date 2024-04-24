@@ -47,7 +47,6 @@ const createRandomUser = () => {
 // }
 
 let q1 = "INSERT INTO user (userId, username, email, password) VALUES ?"
-let q2 = "SHOW TABLES"
 let q3 = "SELECT * FROM user"
 
 
@@ -99,16 +98,19 @@ app.get('/', function (req, res) {
     )
 })
 
-app.get("/user", (req, res) => {
+function renderUserPage(res) {
     let q = `SELECT * FROM user;`
-    connection.query(
-        q,
-        function (err, result) {
-            if (err) console.log(err);
-            let count = 1;
-            res.render("allUsers.ejs", { result, count })
+    connection.query(q, function (err, result) {
+        if (err) {
+            console.error("Error retrieving user data:", err);
+            return res.status(500).send('Internal Server Error');
         }
-    )
+        res.render("allUsers.ejs", { result });
+    });
+}
+
+app.get("/user", (req, res) => {
+    renderUserPage(res);
 })
 
 let noPass = true;
@@ -149,15 +151,18 @@ app.patch("/user/:id", (req, res) => {
                 // FOR USERNAME: CONNECTION.QUERY() NESTING.
                 connection.query(
                     q2,
-                    function (err, result) {
+                    function (err, result2) {
                         if (err) console.log(err);
-                        console.log(result)
+                        console.log(result2)
                         noPass = false;
+                        connection.query(
+                            `SELECT * FROM user WHERE userId='${id}'`,
+                            function () {
+                            }
+                        )
 
                     }
                 )
-                connection.end();
-                // FOR EMAIL
                 connection.query(
                     q3,
                     function (err, result) {
@@ -168,31 +173,7 @@ app.patch("/user/:id", (req, res) => {
                     }
                 )
             }
-
         }
     )
 })
 
-//FOR "CREATING" PAGE
-
-app.get("/user/create", (req, res) => {
-    let newId = uuidv4();
-    res.render("create.ejs", { newId })
-})
-
-// TO APPEND THE CREATED DATA TO THE TABLE
-
-app.post("/user/:id", (req, res) => {
-    let { id } = req.params;
-    let { username: newUsername, email: newEmail, password: newPass } = req.body;
-    let newUser = [id, newUsername, newEmail, newPass]
-    let q = `INSERT INTO user (userId, username, email, password) VALUES ('${id}', '${newUsername}', '${newEmail}', '${newPass}')`
-    connection.query(
-        q,
-        function (err, result) {
-            console.log(err)
-            res.redirect("/user")
-        }
-    )
-
-})
